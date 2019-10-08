@@ -7,6 +7,7 @@ const NumberButton = props => {
 
       <button
         className={`number-button button ${props.zero ? `zero-button` : ""}`}
+        onClick={() => props.updateDisplay(props.button)}
       >
         {props.button}
       </button>

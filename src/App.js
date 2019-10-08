@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 // import "./components/ButtonComponents/ButtonComponents.css";
 
@@ -18,24 +18,97 @@ function App() {
   // Your functions should accept a parameter of the the item data being displayed to the DOM (ie - should recieve 5 if the user clicks on
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
+  const [display, setDisplay] = useState(0);
+  const [total, setTotal] = useState(0);
 
+  const updateDisplay = value => {
+    if (display === 0) {
+      setDisplay(value);
+    } else {
+      setDisplay(display => display + value);
+    }
+  };
+
+  const add = () => {
+    if (total !== 0) {
+      setTotal(total => total + display);
+      setDisplay(total);
+    }
+  };
+
+  const sub = () => {
+    if (total !== 0) {
+      setTotal(total => total - display);
+      setDisplay(total);
+    }
+  };
+
+  const mult = () => {
+    if (total !== 0) {
+      setTotal(total => total * display);
+      setDisplay(total);
+    }
+  };
+
+  const divide = () => {
+    if (total !== 0) {
+      setTotal(total => total / display);
+      setDisplay(total);
+    }
+  };
+
+  const percent = () => {
+    if (total !== 0) {
+      setTotal(total => (total * 100) / display);
+      setDisplay(total);
+    }
+  };
+
+  const invert = () => {
+    if (total !== 0) {
+      setTotal(total => total * -1);
+      setDisplay(total);
+    }
+  };
+
+  const equals = () => {
+    setTotal(display);
+  };
+
+  const clear = () => {
+    setDisplay(0);
+  };
+
+  const operators = {
+    add,
+    sub,
+    mult,
+    divide,
+    equals
+  };
+
+  const specials = {
+    percent,
+    invert,
+    clear
+  };
   return (
     <div className="container">
       <Logo />
       <div className="App">
         {/* STEP 4 - Render your components here and be sure to properly import/export all files */}
-        <Display display={0} />
+        <Display display={display} />
         <div className="input">
           <div className="input-col1">
             <div className="input-col1-specials">
               <Specials />
             </div>
             <div className="input-col2-numbers">
-              <Numbers />
+              <Numbers updateDisplay={updateDisplay} />
             </div>
           </div>
           <div className="input-operators">
-            <Operators />
+            <Operators setOperators={operators} />
           </div>
         </div>
       </div>
