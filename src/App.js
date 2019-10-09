@@ -25,54 +25,55 @@ function App() {
     if (display === 0) {
       setDisplay(value);
     } else {
-      setDisplay(display => display + value);
+      setDisplay(display => display * 10 + value);
     }
   };
 
   const add = () => {
-    if (total !== 0) {
-      setTotal(total => total + display);
-      setDisplay(total);
-    }
+    setTotal(total => (total = total + display));
+    setDisplay(total);
+    console.log(total);
   };
 
   const sub = () => {
     if (total !== 0) {
-      setTotal(total => total - display);
+      setTotal(total => (total = total - display));
       setDisplay(total);
     }
   };
 
   const mult = () => {
     if (total !== 0) {
-      setTotal(total => total * display);
+      setTotal(total => (total = total * display));
       setDisplay(total);
     }
   };
 
   const divide = () => {
     if (total !== 0) {
-      setTotal(total => total / display);
+      setTotal(total => (total = total / display));
       setDisplay(total);
     }
   };
 
   const percent = () => {
     if (total !== 0) {
-      setTotal(total => (total * 100) / display);
+      setTotal(total => (total = (total * 100) / display));
       setDisplay(total);
     }
   };
 
   const invert = () => {
-    if (total !== 0) {
-      setTotal(total => total * -1);
-      setDisplay(total);
-    }
+    // if (total !== 0) {
+    setTotal(total => (total = total * -1));
+    console.log(total);
+    setDisplay(total);
+    // }
   };
 
   const equals = () => {
     setTotal(display);
+    console.log(total);
   };
 
   const clear = () => {
@@ -80,18 +81,19 @@ function App() {
   };
 
   const operators = {
-    add,
-    sub,
-    mult,
-    divide,
-    equals
+    "+": add,
+    "-": sub,
+    x: mult,
+    "/": divide,
+    "=": equals
   };
 
   const specials = {
-    percent,
-    invert,
-    clear
+    "%": percent,
+    "+/-": invert,
+    C: clear
   };
+
   return (
     <div className="container">
       <Logo />
@@ -101,7 +103,7 @@ function App() {
         <div className="input">
           <div className="input-col1">
             <div className="input-col1-specials">
-              <Specials />
+              <Specials setSpecials={specials} />
             </div>
             <div className="input-col2-numbers">
               <Numbers updateDisplay={updateDisplay} />
