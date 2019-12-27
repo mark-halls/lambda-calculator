@@ -18,66 +18,101 @@ function App() {
   // Your functions should accept a parameter of the the item data being displayed to the DOM (ie - should recieve 5 if the user clicks on
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
-  const [display, setDisplay] = useState(0);
-  const [total, setTotal] = useState(0);
+  const initialState = {
+    display: "0",
+    lastOperator: "",
+    previousDisplay: "0"
+  };
+
+  const [state, setState] = useState(initialState);
 
   const updateDisplay = value => {
-    if (display === 0) {
-      setDisplay(value);
-    } else {
-      setDisplay(display => display * 10 + value);
+    if (state.display === "0") {
+      setState({ ...state, display: value });
+    } else if (state.display.length < 9) {
+      setState({ ...state, display: state.display + value });
     }
   };
 
   const add = () => {
-    setTotal(total => (total = total + display));
-    setDisplay(total);
-    console.log(total);
+    const total = `${parseInt(state.display) +
+      parseInt(state.previousDisplay)}`;
+    const previous = state.display;
+    setState({
+      ...state,
+      display: total,
+      previousDisplay: previous,
+      lastOperator: "+"
+    });
   };
 
   const sub = () => {
-    if (total !== 0) {
-      setTotal(total => (total = total - display));
-      setDisplay(total);
+    if (state.display !== "0") {
+      const total = `${parseInt(state.display) -
+        parseInt(state.previousDisplay)}`;
+      const previous = state.display;
+      setState({
+        ...state,
+        display: total,
+        previousDisplay: previous,
+        lastOperator: "-"
+      });
     }
   };
 
   const mult = () => {
-    if (total !== 0) {
-      setTotal(total => (total = total * display));
-      setDisplay(total);
+    if (state.display !== "0") {
+      const total = `${parseInt(state.display) *
+        parseInt(state.previousDisplay)}`;
+      const previous = state.display;
+      setState({
+        ...state,
+        display: total,
+        previousDisplay: previous,
+        lastOperator: "*"
+      });
     }
   };
 
   const divide = () => {
-    if (total !== 0) {
-      setTotal(total => (total = total / display));
-      setDisplay(total);
+    if (state.display !== "0") {
+      const total = `${parseInt(state.display) /
+        parseInt(state.previousDisplay)}`;
+      const previous = state.display;
+      setState({
+        ...state,
+        display: total,
+        previousDisplay: previous,
+        lastOperator: "/"
+      });
     }
   };
 
   const percent = () => {
-    if (total !== 0) {
-      setTotal(total => (total = (total * 100) / display));
-      setDisplay(total);
+    if (state.display !== "0") {
+      const total = `${(parseInt(state.display) * 100) /
+        parseInt(state.previousDisplay)}`;
+      const previous = state.display;
+      setState({
+        ...state,
+        display: total,
+        previousDisplay: previous,
+        lastOperator: "%"
+      });
     }
   };
 
   const invert = () => {
-    // if (total !== 0) {
-    setTotal(total => (total = total * -1));
-    console.log(total);
-    setDisplay(total);
-    // }
+    const total = `${parseInt(state.display) * -1}`;
+    setState({ ...state, display: total });
   };
 
   const equals = () => {
-    setTotal(display);
-    console.log(total);
+    setState({ ...state });
   };
 
   const clear = () => {
-    setDisplay(0);
+    setState(initialState);
   };
 
   const operators = {
@@ -99,7 +134,7 @@ function App() {
       <Logo />
       <div className="App">
         {/* STEP 4 - Render your components here and be sure to properly import/export all files */}
-        <Display display={display} />
+        <Display display={state.display} />
         <div className="input">
           <div className="input-col1">
             <div className="input-col1-specials">
